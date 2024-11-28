@@ -1,6 +1,6 @@
 {
-  "name": "vite-package-example",
-  "description": "Template example for creating npm packages using vite",
+  "name": "generate-changelog",
+  "description": "Generate a changelog json from a git commit history",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "author": {
-    "name": "André Malveira",
-    "email": "andremalveira.dev@gmail.com",
-     "url": "https://github.com/andremalveira"
+    "name": "Stef Kors",
+    "email": "stef.kors+npmpackage@gmail.com",
+    "url": "https://github.com/StefKors"
   },
-  "repository": "https://github.com/username/package-name",
+  "repository": "https://github.com/StefKors/generate-changelog",
   "files": [
     "dist"
   ],
