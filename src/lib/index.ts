@@ -2,11 +2,11 @@ import * as fs from 'node:fs';
 import { getLocalCommits } from './getLocalCommits.js';
 import { fetchGitHubCommits } from './fetchGitHubCommits.js';
 
-interface ChangelogEntry {
+export interface ChangelogEntry {
     [version: string]: string[];
 }
 
-interface Changelog {
+export interface Changelog {
     releases: ChangelogEntry;
 }
 
@@ -16,7 +16,7 @@ export interface Options {
     owner?: string;
 }
 
-const generateChangelog = async ({ write, owner, repo }: Options) => {
+const generateChangelog = async ({ write, owner, repo }: Options): Promise<Changelog> => {
     try {
 
         let lines: string[] = []
@@ -130,7 +130,7 @@ const generateChangelog = async ({ write, owner, repo }: Options) => {
         return changelog
     } catch (error) {
         console.error('Error generating changelog:', error);
-        return {}
+        return {} as Changelog;
     }
 };
 
