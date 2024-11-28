@@ -2,8 +2,18 @@ import * as fs from 'node:fs';
 import { getLocalCommits } from './getLocalCommits.js';
 import { fetchGitHubCommits } from './fetchGitHubCommits.js';
 
+export type ChangeType = "Fixed"
+  |"Added"
+  |"Improved"
+  |"Removed"
+
+export interface Change {
+    type: ChangeType;
+    message: string;
+}
+
 export interface ChangelogEntry {
-    [version: string]: string[];
+    [version: string]: Change[];
 }
 
 export interface Changelog {
@@ -52,20 +62,20 @@ const generateChangelog = async ({ write, owner, repo }: Options): Promise<Chang
                 let formattedMessage = commitMessage;
 
                 // Determine the type of change
-                let changeType = '[Fixed]';
+                let changeType: ChangeType = 'Fixed';
                 if (commitMessage.toLowerCase().includes('add')) {
-                    changeType = '[Added]';
+                    changeType = 'Added';
                 } else if (commitMessage.toLowerCase().includes('improve')) {
-                    changeType = '[Improved]';
+                    changeType = 'Improved';
                 } else if (commitMessage.toLowerCase().includes('remove')) {
-                    changeType = '[Removed]';
+                    changeType = 'Removed';
                 }
 
                 // Format the message similar to the example
                 if (prMatch) {
-                    formattedMessage = `${changeType} ${commitMessage} - #${prMatch[1]}`;
+                    formattedMessage = `${commitMessage} - #${prMatch[1]}`;
                 } else {
-                    formattedMessage = `${changeType} ${commitMessage}`;
+                    formattedMessage = `${commitMessage}`;
                 }
 
                 const isMergeCommit = formattedMessage.includes('Merge branch') || formattedMessage.includes('Merge pull request');
@@ -80,11 +90,13 @@ const generateChangelog = async ({ write, owner, repo }: Options): Promise<Chang
                     if (!changelog.releases[currentVersion]) {
                         changelog.releases[currentVersion] = [];
                     }
-                    (changelog.releases[currentVersion] as string[]).push(formattedMessage);
+                    (changelog.releases[currentVersion] as Change[]).push({
+                        type: changeType,
+                        message: formattedMessage
+                    });
                 }
             } else {
                 // fallback and defaults
-                console.log('fallback and defaults', line);
             }
         });
 
