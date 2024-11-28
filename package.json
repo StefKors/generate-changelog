@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc",
     "preview": "vite preview"
   },
   "author": {
@@ -16,22 +16,44 @@
   },
   "repository": "https://github.com/StefKors/generate-changelog",
   "files": [
-    "dist"
+    "distribution"
   ],
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
   },
+  "exports": {
+		"types": "./distribution/index.d.ts",
+		"default": "./distribution/index.js"
+	},
   "devDependencies": {
     "@types/node": "^22.10.1",
-    "path": "^0.12.7",
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0",
-    "vite-plugin-dts": "^2.1.0"
-  }
+    "typescript": "^5.7.2",
+    "vite": "^6.0.1",
+    "vite-plugin-dts": "^4.3.0"
+  },
+  "packageManager": "npm@10.1.0",
+  "keywords": [
+    "npm",
+    "package",
+    "changelog",
+    "semver",
+    "json",
+    "versioning",
+    "release notes",
+    "version tracking",
+    "automation",
+    "software development",
+    "continuous integration",
+    "CI/CD",
+    "development tools",
+    "change tracking",
+    "release management",
+    "git",
+    "git hooks",
+    "node.js",
+    "command-line tool",
+    "open source",
+    "developer tools"
+  ]  
 }
