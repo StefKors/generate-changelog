@@ -1,6 +1,6 @@
 {
 "compilerOptions": {
-		"outDir": "${configDir}/dist",
+		"outDir": "${configDir}/distribution",
 		"module": "node16",
 		"moduleResolution": "node16",
 		"moduleDetection": "force",
