@@ -17,6 +17,9 @@
     "url": "https://github.com/StefKors"
   },
   "repository": "https://github.com/StefKors/generate-changelog",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "files": [
     "distribution"
   ],
