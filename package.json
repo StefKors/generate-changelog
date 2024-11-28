@@ -1,5 +1,5 @@
 {
-  "name": "generate-changelog",
+  "name": "@kors/generate-changelog",
   "description": "Generate a changelog json from a git commit history",
   "private": true,
   "version": "0.1.3",
