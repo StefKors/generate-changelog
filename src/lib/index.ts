@@ -1,6 +1,6 @@
 // run with `npx tsx scripts/generate-changelog.ts` or something
-import {execSync} from 'child_process';
-import * as fs from 'fs';
+import {execSync} from 'node:child_process';
+import * as fs from 'node:fs';
 
 interface ChangelogEntry {
     [version: string]: string[];
