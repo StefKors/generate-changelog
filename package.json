@@ -16,7 +16,10 @@
     "email": "stef.kors+npmpackage@gmail.com",
     "url": "https://github.com/StefKors"
   },
-  "repository": "https://github.com/StefKors/generate-changelog.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefKors/generate-changelog.git"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
