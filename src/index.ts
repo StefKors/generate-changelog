@@ -1,2 +1,2 @@
 
-export { generateChangelog } from './lib';
+export { generateChangelog } from './lib/index.js';
