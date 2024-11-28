@@ -1,7 +1,3 @@
-const packageExample = () => {
-    console.log('✅ package example using vite')
-}
-
 // run with `npx tsx scripts/generate-changelog.ts` or something
 import {execSync} from 'child_process';
 import * as fs from 'fs';
@@ -72,14 +68,14 @@ const generateChangelog = ({write}: Options) => {
                     formattedMessage !== '' &&
                     currentVersion
                 ) {
-                    if (Array.isArray(changelog.releases[currentVersion]) == false) {
-                        changelog.releases[currentVersion] = []
+                    if (!changelog.releases[currentVersion]) {
+                        changelog.releases[currentVersion] = [];
                     }
-                    changelog.releases[currentVersion].push(formattedMessage);
+                    (changelog.releases[currentVersion] as string[]).push(formattedMessage);
                 }
             } else {
                 // fallback and defaults
-
+                console.log('fallback and defaults', line);
             }
         });
 
@@ -96,20 +92,22 @@ const generateChangelog = ({write}: Options) => {
                 if (a === 'changes') return 1;
                 if (b === 'changes') return -1;
 
-                // Split version strings into components
-                const aParts = a.split('.').map(Number);
-                const bParts = b.split('.').map(Number);
+                // Split version strings into components and ensure numbers (default to 0)
+                const aParts = a.split('.').map(part => Number(part) || 0);
+                const bParts = b.split('.').map(part => Number(part) || 0);
 
                 // Compare major, minor, and patch versions
                 for (let i = 0; i < 3; i++) {
                     if (aParts[i] !== bParts[i]) {
-                        return bParts[i] - aParts[i];
+                        return (bParts?.[i] ?? 0) - (aParts?.[i] ?? 0);
                     }
                 }
                 return 0;
             })
             .forEach(key => {
-                sortedReleases[key] = changelog.releases[key];
+                if (changelog.releases[key]) {
+                    sortedReleases[key] = changelog.releases[key];
+                }
             });
 
         changelog.releases = sortedReleases;
@@ -123,6 +121,7 @@ const generateChangelog = ({write}: Options) => {
         return changelog
     } catch (error) {
         console.error('Error generating changelog:', error);
+        return {}
     }
 };
 

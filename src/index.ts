@@ -1,2 +1,2 @@
 
-export { packageExample } from './lib';
+export { generateChangelog } from './lib';
