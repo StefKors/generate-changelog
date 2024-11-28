@@ -1,6 +1,6 @@
-// run with `npx tsx scripts/generate-changelog.ts` or something
-import {execSync} from 'node:child_process';
 import * as fs from 'node:fs';
+import { getLocalCommits } from './getLocalCommits.js';
+import { fetchGitHubCommits } from './fetchGitHubCommits.js';
 
 interface ChangelogEntry {
     [version: string]: string[];
@@ -12,13 +12,22 @@ interface Changelog {
 
 export interface Options {
     write?: boolean;
+    repo?: string;
+    owner?: string;
 }
 
-const generateChangelog = ({write}: Options) => {
+const generateChangelog = async ({ write, owner, repo }: Options) => {
     try {
-        // Get git log output
-        const gitLog = execSync('git log --oneline  --no-color').toString();
-        const lines: string[] = gitLog.split('\n');
+
+        let lines: string[] = []
+        if (repo && owner) {
+            console.log("fetching from remote", owner, repo)
+            lines = await fetchGitHubCommits(owner, repo)
+        } else {
+            console.log("reading local commits")
+            lines = getLocalCommits()
+        }
+
         // Initialize changelog object
         const changelog: Changelog = {
             releases: {},
@@ -81,7 +90,7 @@ const generateChangelog = ({write}: Options) => {
 
         // check version and if it's still the default, rename it.
         if (currentVersion === '0.0.0') {
-            delete Object.assign(changelog.releases, {['changes']: changelog.releases['0.0.0'] })['0.0.0'];
+            delete Object.assign(changelog.releases, { ['changes']: changelog.releases['0.0.0'] })['0.0.0'];
         }
 
         // Sort versions using semver comparison

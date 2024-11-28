@@ -63,5 +63,9 @@
     "command-line tool",
     "open source",
     "developer tools"
-  ]
+  ],
+  "dependencies": {
+    "meow": "^13.2.0",
+    "octokit": "^4.0.2"
+  }
 }
