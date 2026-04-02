@@ -11,6 +11,7 @@ const cli = meow(`
 	  --write, -w 	Write output to changelog.json
 	  --owner, -o 	Fetch commits from github owner (used with --repo)
 	  --repo, -r 		Fetch commit from github repo (used with --owner)
+	  --token, -t 	GitHub token (or set GITHUB_TOKEN in the environment)
 	  --version 		Print current version
 	  --help 				Print help message
 
@@ -19,7 +20,10 @@ const cli = meow(`
         $ generate-changelog --write 
 
         Generate from remote repo:
-        $ generate-changelog --owner="StefKors" --repo="generate-changelog" 
+        $ generate-changelog --owner="StefKors" --repo="generate-changelog"
+
+        With authentication (private repos or higher API rate limits):
+        $ generate-changelog --owner="StefKors" --repo="generate-changelog" --token="$GITHUB_TOKEN"
 `, {
 	importMeta: import.meta,
 	flags: {
@@ -34,8 +38,17 @@ const cli = meow(`
         repo: {
 			type: 'string',
 			shortFlag: 'r'
-		}
+		},
+        token: {
+            type: 'string',
+            shortFlag: 't'
+        }
 	}
 });
 
-generateChangelog(cli.flags);
+generateChangelog({
+    write: cli.flags.write,
+    owner: cli.flags.owner,
+    repo: cli.flags.repo,
+    githubToken: cli.flags.token ?? process.env['GITHUB_TOKEN'] ?? process.env['GH_TOKEN'],
+});

@@ -24,15 +24,17 @@ export interface Options {
     write?: boolean;
     repo?: string;
     owner?: string;
+    /** GitHub personal access token or fine-grained token (higher rate limits; required for private repos). */
+    githubToken?: string;
 }
 
-const generateChangelog = async ({ write, owner, repo }: Options): Promise<Changelog> => {
+const generateChangelog = async ({ write, owner, repo, githubToken }: Options): Promise<Changelog> => {
     try {
 
         let lines: string[] = []
         if (repo && owner) {
             console.log("fetching from remote", owner, repo)
-            lines = await fetchGitHubCommits(owner, repo)
+            lines = await fetchGitHubCommits(owner, repo, githubToken)
         } else {
             console.log("reading local commits")
             lines = getLocalCommits()
